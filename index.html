@@ -1,0 +1,221 @@
+<html>
+
+<head>
+  <title>Schedule</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+  <link href="https://fonts.googleapis.com/css?family=Noto+Sans+TC|Roboto&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  <style>
+    body {
+      font-family: 'Noto Sans TC', 'Roboto', sans-serif;
+    }
+  </style>
+  <script type="text/javascript">
+    google.charts.load('current', {
+      packages: ['gantt']
+    });
+    google.charts.load("current", {
+      packages: ["timeline"]
+    });
+    google.charts.setOnLoadCallback(drawGantt);
+    google.charts.setOnLoadCallback(drawTimeline);
+
+    function daysToMilliseconds(days) {
+      return days * 24 * 60 * 60 * 1000;
+    }
+
+    function drawGantt() {
+      var data = new google.visualization.DataTable();
+      data.addColumn('string', 'Task ID');
+      data.addColumn('string', 'Task Name');
+      data.addColumn('date', 'Start Date');
+      data.addColumn('date', 'End Date');
+      data.addColumn('number', 'Duration');
+      data.addColumn('number', 'Percent Complete');
+      data.addColumn('string', 'Dependencies');
+
+      let rows = [
+        ['Cap', 'Cap for .NET Core', new Date(2019, 11, 4), new Date(2019, 11, 11), null, 50, null],
+        ['Service', 'IISS Service', null, new Date(2019, 11, 18), daysToMilliseconds(7), 0, 'Cap'],
+        ['Layout', 'Web Layout', null, new Date(2019, 11, 21), daysToMilliseconds(3), 0, 'Service'],
+        ['Import', 'Import Function', null, new Date(2019, 11, 25), daysToMilliseconds(7), 0, 'Service'],
+        ['Assign', 'Assign & Sign off', null, new Date(2019, 11, 24), daysToMilliseconds(3), 0, 'Layout'],
+        ['Report', 'Report', null, new Date(2019, 11, 30), daysToMilliseconds(6), 0, 'Assign,Import'],
+        ['Deploy', 'Deploy & Test', null, new Date(2020, 0, 8), daysToMilliseconds(9), 0, 'Report'],
+        ['Docker', 'Docker Image', null, new Date(2020, 0, 15), daysToMilliseconds(7), 0, 'Deploy'],
+        ['Buffer', 'Buffer', null, new Date(2020, 0, 23), daysToMilliseconds(8), 0, 'Docker'],
+      ]
+
+      data.addRows(rows);
+
+      var options = {
+        height: 400,
+      };
+      var chart = new google.visualization.Gantt(document.getElementById('gantt'));
+      chart.draw(data, options);
+    }
+
+    function drawTimeline() {
+      var container = document.getElementById('timeline');
+      var chart = new google.visualization.Timeline(container);
+      var dataTable = new google.visualization.DataTable();
+      dataTable.addColumn({
+        type: 'string',
+        id: 'Name'
+      });
+      dataTable.addColumn({
+        type: 'string',
+        id: 'Work'
+      });
+      dataTable.addColumn({
+        type: 'date',
+        id: 'Start'
+      });
+      dataTable.addColumn({
+        type: 'date',
+        id: 'End'
+      });
+      dataTable.addRows([
+        ['Mandy', 'Cap for .NET Core', new Date(2019, 11, 4), new Date(2019, 11, 11)],
+        ['Mandy', 'IISS Phase 2 SA Document', new Date(2019, 11, 11), new Date(2019, 11, 30)],
+        ['Mandy', 'Deploy & Test', new Date(2019, 11, 30), new Date(2020, 0, 8)],
+        ['Mandy', 'Docker Image', new Date(2020, 0, 8), new Date(2020, 0, 15)],
+        ['Mandy', 'Buffer', new Date(2020, 0, 15), new Date(2020, 0, 23)],
+        ['宜君', 'Vue', new Date(2019, 11, 4), new Date(2019, 11, 11)],
+        ['宜君', 'Cap Parameters Setting Function ', new Date(2019, 11, 11), new Date(2019, 11, 18)],
+        ['宜君', 'Web Layout', new Date(2019, 11, 18), new Date(2019, 11, 21)],
+        ['宜君', 'Assign & Sign off', new Date(2019, 11, 21), new Date(2019, 11, 24)],
+        ['宜君', 'Report', new Date(2019, 11, 24), new Date(2019, 11, 30)],
+        ['宜君', 'Deploy & Test', new Date(2019, 11, 30), new Date(2020, 0, 8)],
+        ['宜君', 'Docker Image', new Date(2020, 0, 8), new Date(2020, 0, 15)],
+        ['宜君', 'Buffer', new Date(2020, 0, 15), new Date(2020, 0, 23)],
+        ['家華', 'Vue vs React', new Date(2019, 11, 4), new Date(2019, 11, 11)],
+        ['家華', 'IISS Service', new Date(2019, 11, 11), new Date(2019, 11, 18)],
+        ['家華', 'Import Function', new Date(2019, 11, 18), new Date(2019, 11, 25)],
+        ['家華', 'Report', new Date(2019, 11, 25), new Date(2019, 11, 30)],
+        ['家華', 'Deploy & Test', new Date(2019, 11, 30), new Date(2020, 0, 8)],
+        ['家華', 'Docker Image', new Date(2020, 0, 8), new Date(2020, 0, 15)],
+        ['家華', 'Buffer', new Date(2020, 0, 15), new Date(2020, 0, 23)],
+      ]);
+
+      chart.draw(dataTable);
+    }
+  </script>
+</head>
+
+<body>
+  <nav>
+    <div class="nav-wrapper indigo darken-1">
+      <a href="#" class="brand-logo" >IISI</a>
+    </div>
+  </nav>
+  <div class="container">
+    <div class="row">
+      <div class="col s12">
+        <div class="card z-depth-3">
+          <div class="card-content">
+            <span class="card-title">IISS .NET Core MVC</span>
+            <div id="gantt"></div>
+          </div>
+        </div>
+      </div>
+      <div class="col s12">
+        <div class="card z-depth-3">
+          <div class="card-content">
+            <span class="card-title">Schedule</span>
+            <div id="timeline"></div>
+          </div>
+        </div>
+      </div>
+      <div class="col s12 m4">
+        <div class="card z-depth-3">
+          <div class="card-content">
+            <span class="card-title">宜君</span>
+            <p>
+              <label>
+                <input type="checkbox" />
+                <span>會用Google</span>
+              </label>
+            </p>
+            <p>
+              <label>
+                <input type="checkbox" />
+                <span>基本簡報能力</span>
+              </label>
+            </p>
+            <p>
+              <label>
+                <input type="checkbox" />
+                <span>.NET Core</span>
+              </label>
+            </p>
+            <p>
+              <label>
+                <input type="checkbox" />
+                <span>Vue</span>
+              </label>
+            </p>
+            <p>
+              <label>
+                <input type="checkbox" />
+                <span>Material Design</span>
+              </label>
+            </p>
+            <p>
+              <label>
+                <input type="checkbox" />
+                <span>獨立完成專案</span>
+              </label>
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="col s12 m4">
+        <div class="card z-depth-3">
+          <div class="card-content">
+            <span class="card-title">家華</span>
+            <p>
+              <label>
+                <input type="checkbox" />
+                <span>會用Google</span>
+              </label>
+            </p>
+            <p>
+              <label>
+                <input type="checkbox" />
+                <span>基本簡報能力</span>
+              </label>
+            </p>
+            <p>
+              <label>
+                <input type="checkbox" />
+                <span>.NET Core</span>
+              </label>
+            </p>
+            <p>
+              <label>
+                <input type="checkbox" />
+                <span>Vue</span>
+              </label>
+            </p>
+            <p>
+              <label>
+                <input type="checkbox" />
+                <span>Material Design</span>
+              </label>
+            </p>
+            <p>
+              <label>
+                <input type="checkbox" />
+                <span>獨立完成專案</span>
+              </label>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>
